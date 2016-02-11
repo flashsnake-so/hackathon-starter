@@ -97,7 +97,7 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http) {
         delete newApply.updateTime;
         delete newApply.createTime;
 
-        $scope.apiClient.applicationPatchh({applicationId: application.applicationId}, newApply).then(function(res){
+        $scope.apiClient.applicationPatch({applicationId: application.applicationId}, newApply).then(function(res){
             $rootScope.alerts.push({type:"success", msg:"Successfully accepted application"});
             $scope.$apply();
             $scope.selectedCampaign.applications = [];
@@ -122,7 +122,7 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http) {
                     delete updatedApplication.$$hashKey;
                     delete updatedApplication.applicantProfile;
                     //Update application status
-                    $scope.apiClient.applicationPatchh({applicationId: updatedApplication.applicationId}, updatedApplication).then(function(res){
+                    $scope.apiClient.applicationPatch({applicationId: updatedApplication.applicationId}, updatedApplication).then(function(res){
                         $scope.$apply();
                     });
                 });
@@ -181,7 +181,7 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http) {
         delete application.time;
         delete application.updateTime;
         delete application.createTime;
-        $scope.apiClient.applicationPatchh({applicationId: application.applicationId}, application).then(function(res){
+        $scope.apiClient.applicationPatch({applicationId: application.applicationId}, application).then(function(res){
             $rootScope.alerts.push({type:"success", msg:"Successfully accepted application"});
             $scope.$apply();
             $scope.selectedCampaign.applications = [];
@@ -202,7 +202,7 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http) {
 //                        $rootScope.alerts.push({type:"success", msg:"Post has been successfully scheduled"});
 //                        campaign.application.status = "completed";
 //                        delete campaign.application.updateTime;
-//                        $scope.apiClient.applicationPatchh({applicationId: campaign.application.applicationId}, campaign.application).then(function(res){
+//                        $scope.apiClient.applicationPatch({applicationId: campaign.application.applicationId}, campaign.application).then(function(res){
 //                            $scope.$apply();
 //                        });
 //                        $scope.$apply();
