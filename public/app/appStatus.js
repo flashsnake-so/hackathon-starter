@@ -94,7 +94,7 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http, CampaignSer
         delete newApply.updateTime;
         delete newApply.createTime;
 
-        $scope.apiClient.applicationPatchh({applicationId: application.applicationId}, newApply).then(function(res){
+        $scope.apiClient.applicationPatch({applicationId: application.applicationId}, newApply).then(function(res){
             $rootScope.alerts.push({type:"success", msg:"Successfully accepted application"});
             $scope.$apply();
             $scope.selectedCampaign.applications = [];
@@ -154,6 +154,92 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http, CampaignSer
                     delete updatedApplication.$$hashKey;
                     delete updatedApplication.applicantProfile;
                     //Update application status
+                    $scope.apiClient.applicationPatch({applicationId: updatedApplication.applicationId}, updatedApplication).then(function(res){
+                        $scope.$apply();
+                    });
+                });
+            }
+        })
+    }
+//    $scope.applicantConfirmPostTime = function(application){
+//        //TODO: set application status to confirmed
+//        application.status = "confirmed";
+//        var actionTime = new Date();
+//        actionTime.setDate(application.date.getDate());
+//        actionTime.setHours(application.time.getHours());
+//        actionTime.setMinutes(application.time.getMinutes());
+//        application.ownerActionTime = actionTime.getTime()+"";
+//
+//        delete application.date;
+//        delete application.isCalendarOpened;
+//        delete application.time;
+//        delete application.updateTime;
+//        delete application.createTime;
+//        $scope.apiClient.applicationPatch({applicationId: application.applicationId}, application).then(function(res){
+//            $rootScope.alerts.push({type:"success", msg:"Successfully accepted application"});
+//            $scope.$apply();
+//            $scope.selectedCampaign.applications = [];
+//            $scope.getMyCampaigns();
+//        });
+//;
+////        $http.get('/extendFbToken/' + $rootScope.fbToken, {}).then(function(res){
+////            if(!res.data.message){
+////                $rootScope.fbToken = res.data.newToken;
+//////                $http.post("/account/profile", $scope.user, {headers:{"Content-type": "application/json"}
+//////                });
+////                $scope.apiClient.schedulepostPost({}, {
+////                    applicationId: campaign.application.applicationId,
+////                    pageId: campaign.application.pageId,
+////                    actionTime: campaign.application.actionTime,
+////                    accessToken: $rootScope.fbToken,
+////                    message: campaign.application.message
+////                }, {header: {"Content-type": "application/json"}}).then(function(res){
+////                        $rootScope.alerts.push({type:"success", msg:"Post has been successfully scheduled"});
+////                        campaign.application.status = "completed";
+////                        delete campaign.application.updateTime;
+////                        $scope.apiClient.applicationPatch({applicationId: campaign.application.applicationId}, campaign.application).then(function(res){
+////                            $scope.$apply();
+////                        });
+////                        $scope.$apply();
+////                    });
+////            }
+////        })
+////        $scope.apiClient.schedulepostPost({"accessToken": $rootScope.fbToken}, {}, {
+////                headers:{"Content-type": "application/json"}
+////            }
+////        ).then(function(res){
+////                var pageList = res.data.data;
+////                for (var i=0; i<pageList.length; i++){
+////                    if(pageList[i].id == campaign.application.pageId ){
+////                        fbPageAccessToken = pageList[i].access_token;
+////                        break;
+////                    }
+////                }
+////                if(fbPageAccessToken != ''){
+////                }
+////            }).catch(function(){
+////                console.log("Cannot get pages ");
+////            });
+//
+//    };
+});
+    $scope.applicantSchedulePosts = function(application){
+        $http.get('/extendFbToken/' + $rootScope.fbToken, {}).then(function(res){
+            if(!res.data.message){
+                $rootScope.fbToken = res.data.newToken;
+                application.applicantAccessToken = $rootScope.fbToken;
+                //schedule posts
+                $http.post("/api/scheduleFacebookPosts", {"application": application}, {headers:{"Content-type": "application/json"}}).then(function(res){
+                    $rootScope.alerts.push({type:"success", msg:"Post has been successfully scheduled"});
+                    application.status = "scheduled";
+                    var updatedApplication = {};
+                    angular.copy(application, updatedApplication);
+                    delete updatedApplication.updateTime;
+                    delete updatedApplication.applicantAccessToken;
+                    delete updatedApplication.createTime;
+                    delete updatedApplication.$$hashKey;
+                    delete updatedApplication.applicantProfile;
+                    //Update application status
                     $scope.apiClient.applicationApplicationIdPatch({applicationId: updatedApplication.applicationId}, updatedApplication).then(function(res){
                         $scope.$apply();
                     });
@@ -175,7 +261,7 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http, CampaignSer
 //        delete application.time;
 //        delete application.updateTime;
 //        delete application.createTime;
-//        $scope.apiClient.applicationApplicationIdPatch({applicationId: application.applicationId}, application).then(function(res){
+//        $scope.apiClient.applicationPatch({applicationId: application.applicationId}, application).then(function(res){
 //            $rootScope.alerts.push({type:"success", msg:"Successfully accepted application"});
 //            $scope.$apply();
 //            $scope.selectedCampaign.applications = [];
@@ -187,7 +273,7 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http, CampaignSer
 ////                $rootScope.fbToken = res.data.newToken;
 //////                $http.post("/account/profile", $scope.user, {headers:{"Content-type": "application/json"}
 //////                });
-////                $scope.apiClient.insightsFacebookSchedulepostPost({}, {
+////                $scope.apiClient.schedulepostPost({}, {
 ////                    applicationId: campaign.application.applicationId,
 ////                    pageId: campaign.application.pageId,
 ////                    actionTime: campaign.application.actionTime,
@@ -197,14 +283,14 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http, CampaignSer
 ////                        $rootScope.alerts.push({type:"success", msg:"Post has been successfully scheduled"});
 ////                        campaign.application.status = "completed";
 ////                        delete campaign.application.updateTime;
-////                        $scope.apiClient.applicationApplicationIdPatch({applicationId: campaign.application.applicationId}, campaign.application).then(function(res){
+////                        $scope.apiClient.applicationPatch({applicationId: campaign.application.applicationId}, campaign.application).then(function(res){
 ////                            $scope.$apply();
 ////                        });
 ////                        $scope.$apply();
 ////                    });
 ////            }
 ////        })
-////        $scope.apiClient.insightsFacebookPagesGet({"accessToken": $rootScope.fbToken}, {}, {
+////        $scope.apiClient.pagesGet({"accessToken": $rootScope.fbToken}, {}, {
 ////                headers:{"Content-type": "application/json"}
 ////            }
 ////        ).then(function(res){
