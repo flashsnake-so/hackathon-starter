@@ -10,7 +10,7 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http, CampaignSer
 //    My Campaigns Tab
     $scope.selectedCampaign = {applications:[]};
     $scope.getMyCampaigns = function(){
-        CampaignService.getCampaigns({campaignIds: $scope.user.campaignIds.join()}).then(function(campaigns){
+        CampaignService.getCampaigns({userId: $scope.user._id}).then(function(campaigns){
             $scope.inProcessCampaigns = [];
             $scope.completedCampaigns = [];
             angular.forEach(campaigns.data, function(campaign){
