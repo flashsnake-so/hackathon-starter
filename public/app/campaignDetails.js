@@ -51,7 +51,7 @@ app.controller('campaignDetailsCtrl', function ($scope, $uibModal, $rootScope, $
 
     $scope.pageList = [];
     if($rootScope.fbToken){
-        $scope.apiClient.insightsFacebookPagesGet({"accessToken": $rootScope.fbToken}, {}, {
+        $scope.apiClient.pagesGet({"accessToken": $rootScope.fbToken}, {}, {
                 headers:{"Content-type": "application/json"}
             }
         ).then(function(res){
@@ -70,7 +70,7 @@ app.controller('campaignDetailsCtrl', function ($scope, $uibModal, $rootScope, $
         actionTime.setMinutes($scope.time.getMinutes());
         $scope.appForm.actionTime = actionTime.getTime()+"";
         if ($scope.appForm.postContent !=''){
-            $scope.apiClient.campaignCampaignIdApplicationPost({campaignId: id}, $scope.appForm, {
+            $scope.apiClient.campaignsApplicationPost({campaignId: id}, $scope.appForm, {
                     headers:{"Content-type": "application/json"}
                 }
             ).then(function(res){

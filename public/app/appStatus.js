@@ -31,7 +31,7 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http, CampaignSer
     //Get fb page list for accepting applications
     $scope.pageList = [];
     if($rootScope.fbToken){
-        $scope.apiClient.insightsFacebookPagesGet({"accessToken": $rootScope.fbToken}, {}, {
+        $scope.apiClient.pagesGet({"accessToken": $rootScope.fbToken}, {}, {
                 headers:{"Content-type": "application/json"}
             }
         ).then(function(res){
@@ -94,7 +94,7 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http, CampaignSer
         delete newApply.updateTime;
         delete newApply.createTime;
 
-        $scope.apiClient.applicationApplicationIdPatch({applicationId: application.applicationId}, newApply).then(function(res){
+        $scope.apiClient.applicationPatchh({applicationId: application.applicationId}, newApply).then(function(res){
             $rootScope.alerts.push({type:"success", msg:"Successfully accepted application"});
             $scope.$apply();
             $scope.selectedCampaign.applications = [];
@@ -105,7 +105,7 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http, CampaignSer
 
 //    My Applications Tab
     $scope.showMyApplications = function(){
-        $scope.apiClient.userUserIdApplicationGet({userId: $scope.user._id}, {}).then(function(res){
+        $scope.apiClient.applicationGet({applicationId: "", userId: $scope.user._id}, {}).then(function(res){
             $scope.myApplications = res.data;
             $scope.$apply();
             var cIds = [];
