@@ -1,65 +1,41 @@
-app.controller('campaignDetailsCtrl', function ($scope, $uibModal, $rootScope, $routeParams, $http) {
+app.controller('campaignDetailsCtrl', function ($scope, $uibModal, $rootScope, $routeParams, $http, CampaignService) {
     var id = $routeParams.id;
-    var showForm = $routeParams.showForm || false;
 
     $scope.myCampaigns = [];
-    $scope.showAppForm = showForm;
     $scope.submittedForm = false;
-    $scope.apiClient.campaignGet({"count": 1, campaignIds: id, ageRange: 0, numberOfFollowers: 0, startKey: "", tags: ""}, {}, {
-            headers:{"Content-type": "application/json"}
-        }
-    ).then(function(campaigns){
-            $scope.campaign = campaigns.data[0];
-            $scope.$apply   ();
-                $http.get('/userDetails/'+ campaigns.data[0].userId).then(function(res){
-                    if(res.data){
-                        $scope.ownerPic = res.data.profile.picture;
-                        $scope.ownerName = res.data.profile.name;
-                    }
-                });
-        }).catch(function(){
+    $scope.isCalendarOpened = false;
+    CampaignService.getCampaigns({campaignIds: id, "count": 1}).then(function(campaigns){
+        $scope.campaign = campaigns.data[0];
+        $scope.$apply   ();
+        $http.get('/userDetails/'+ campaigns.data[0].userId).then(function(res){
+            if(res.data){
+                $scope.ownerPic = res.data.profile.picture;
+                $scope.ownerName = res.data.profile.name;
+            }
+        });
+    }).catch(function(){
             console.log("error");
         });
 
     $scope.getMyCampaigns = function(){
         if($scope.user.campaignIds.length > 0 && $scope.myCampaigns < 1){
-            $scope.apiClient.campaignGet({"count": 100, campaignIds: $scope.user.campaignIds.join(), ageRange: 0, numberOfFollowers: 0, startKey: "", tags: ""}, {}, {
-                    headers:{"Content-type": "application/json"}
-                }
-            ).then(function(campaigns){
-                    $scope.myCampaigns = campaigns.data;
-                    $scope.$apply   ();
-                }).catch(function(){
+            CampaignService.getCampaigns({campaignIds: $scope.user.campaignIds.join()}).then(function(campaigns){
+                $scope.myCampaigns = campaigns.data;
+                $scope.$apply   ();
+            }).catch(function(){
                     console.log("error");
                 });
         }
     };
     if($scope.user.campaignIds.length > 0){
-        $scope.apiClient.campaignGet({"count": 100, campaignIds: $scope.user.campaignIds.join(), ageRange: 0, numberOfFollowers: 0, startKey: "", tags: ""}, {}, {
-                headers:{"Content-type": "application/json"}
-            }
-        ).then(function(campaigns){
-                $scope.myCampaigns = campaigns.data;
-                $scope.$apply   ();
-            }).catch(function(){
+        CampaignService.getCampaigns({campaignIds: $scope.user.campaignIds.join()}).then(function(campaigns){
+            $scope.myCampaigns = campaigns.data;
+            $scope.$apply   ();
+        }).catch(function(){
                 console.log("error");
             });
     }
-//    $scope.appForm = {
-//        applicationId: generateUUID(),
-//        applicant: {
-//            userId: $rootScope.user._id,
-//            postContent: "",
-//            requirements: "",
-//            campaignId: "",
-//            pageId: "",
-//            reasons:""
-//        },
-//        owner: {
-//            campaignId: id,
-//            userId: ""
-//        }
-//    }
+
     $scope.appForm = {
         applicationId: generateUUID(),
         userId: $rootScope.user._id,
@@ -69,7 +45,8 @@ app.controller('campaignDetailsCtrl', function ($scope, $uibModal, $rootScope, $
         facebookPageId: "",
         reasons: "",
         campaignId: id,
-        ownerUserId: ""
+        ownerUserId: "",
+        actionTime:""
     }
 
     $scope.pageList = [];
@@ -87,7 +64,12 @@ app.controller('campaignDetailsCtrl', function ($scope, $uibModal, $rootScope, $
     }
     $scope.submitAppForm = function(){
         $scope.appForm.ownerUserId = $scope.campaign.userId;
-        if ($scope.appForm.reasons !='' && $scope.appForm.postContent !=''){
+        var actionTime = new Date();
+        actionTime.setDate($scope.date.getDate());
+        actionTime.setHours($scope.time.getHours());
+        actionTime.setMinutes($scope.time.getMinutes());
+        $scope.appForm.actionTime = actionTime.getTime()+"";
+        if ($scope.appForm.postContent !=''){
             $scope.apiClient.campaignCampaignIdApplicationPost({campaignId: id}, $scope.appForm, {
                     headers:{"Content-type": "application/json"}
                 }

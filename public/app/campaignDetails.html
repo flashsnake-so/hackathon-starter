@@ -29,20 +29,19 @@
                 </li>
             </ul>
             <hr/>
-            <a ng-show="!showAppForm && campaign.status == 'pending'" class="btn btn-primary" ng-click="showAppForm = true;">Apply Now !</a>
             <a ng-show="submittedForm" class="btn btn-info" disabled>Applied</a>
             <p ng-show="campaign.status !== 'pending'" class="alert alert-info">
                 This campaign is not opened for applications.
             </p>
-            <a ng-show="!showAppForm || submittedForm" class="btn btn-warning" href="#/campaign">Go Back</a>
+            <a class="btn btn-warning" href="#/campaign">Go Back</a>
 
         </div>
 
     </div>
-    <div ng-show="showAppForm && !submittedForm">
-    <div class="row">
-        <h3 class="page-header">Propose A Trade</h3>
-    </div>
+    <div ng-show="campaign.status === 'pending' && !submittedForm">
+        <div class="row">
+            <h3 class="page-header">Propose A Trade</h3>
+        </div>
         <div class="row" >
             <form class="appForm" role="form">
                 <div class="col-lg-6">
@@ -60,6 +59,16 @@
                                 <div class="input-group col-lg-10">
                                     <textarea type="text" ng-model="appForm.postContent" class="form-control input" name="contentInput" id="contentInput" placeholder="Propose a post for the campaign" required/>
                                 </div>
+                                <label>Date and time you will post</label>
+                                <p class="input-group col-md-6">
+                                    <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-init="isCalendarOpened=false" ng-model="date" ng-init="date=''" is-open="selectedApply.isCalendarOpened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" ng-required="true"  alt-input-formats="altInputFormats" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="isCalendarOpened = !isCalendarOpened"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+                                <span class="input-group col-md-6">
+                                    <uib-timepicker ng-model="time" ng-init="time = ''"></uib-timepicker>
+                                </span>
                                 <label ng-show="pageList.length > 0" for="pageSelect">Page to post</label>
                                 <div ng-show="pageList.length > 0" class="input-group col-lg-10">
                                     <select id="pageSelect" ng-model="appForm.facebookPageId" ng-options="page.id as page.name for page in pageList">
@@ -109,7 +118,7 @@
                         </div>
                     </div>
                     <a class="btn btn-primary" ng-click="submitAppForm()" >Apply</a>
-                    <a class="btn btn-warning" href="#/campaign">Go Back</a>
+                    <a class="btn btn-warning" href="#/campaign">Cancel</a>
                 </div>
 
             </form>
@@ -117,33 +126,33 @@
     </div>
     <!--<div class="row">-->
 
-        <!--<div class="col-lg-12">-->
-            <!--<h3 class="page-header">Similar Campaigns</h3>-->
-        <!--</div>-->
+    <!--<div class="col-lg-12">-->
+    <!--<h3 class="page-header">Similar Campaigns</h3>-->
+    <!--</div>-->
 
-        <!--<div class="col-sm-3 col-xs-6">-->
-            <!--<a href="#">-->
-                <!--<img class="img-responsive portfolio-item" src="http://placehold.it/500x300" alt="">-->
-            <!--</a>-->
-        <!--</div>-->
+    <!--<div class="col-sm-3 col-xs-6">-->
+    <!--<a href="#">-->
+    <!--<img class="img-responsive portfolio-item" src="http://placehold.it/500x300" alt="">-->
+    <!--</a>-->
+    <!--</div>-->
 
-        <!--<div class="col-sm-3 col-xs-6">-->
-            <!--<a href="#">-->
-                <!--<img class="img-responsive portfolio-item" src="http://placehold.it/500x300" alt="">-->
-            <!--</a>-->
-        <!--</div>-->
+    <!--<div class="col-sm-3 col-xs-6">-->
+    <!--<a href="#">-->
+    <!--<img class="img-responsive portfolio-item" src="http://placehold.it/500x300" alt="">-->
+    <!--</a>-->
+    <!--</div>-->
 
-        <!--<div class="col-sm-3 col-xs-6">-->
-            <!--<a href="#">-->
-                <!--<img class="img-responsive portfolio-item" src="http://placehold.it/500x300" alt="">-->
-            <!--</a>-->
-        <!--</div>-->
+    <!--<div class="col-sm-3 col-xs-6">-->
+    <!--<a href="#">-->
+    <!--<img class="img-responsive portfolio-item" src="http://placehold.it/500x300" alt="">-->
+    <!--</a>-->
+    <!--</div>-->
 
-        <!--<div class="col-sm-3 col-xs-6">-->
-            <!--<a href="#">-->
-                <!--<img class="img-responsive portfolio-item" src="http://placehold.it/500x300" alt="">-->
-            <!--</a>-->
-        <!--</div>-->
+    <!--<div class="col-sm-3 col-xs-6">-->
+    <!--<a href="#">-->
+    <!--<img class="img-responsive portfolio-item" src="http://placehold.it/500x300" alt="">-->
+    <!--</a>-->
+    <!--</div>-->
 
     <!--</div>-->
     <!-- /.row -->

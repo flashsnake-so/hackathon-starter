@@ -1,34 +1,27 @@
-app.controller('campaignCtrl', function ($scope, $uibModal, $rootScope) {
+app.controller('campaignCtrl', function ($scope, $uibModal, $rootScope, CampaignService) {
     $scope.campaigns = [];
 
     $scope.showSearchCriteria = false;
 
     $scope.search = {
         ageRange: "0-100",
-        numberOfFollowers: 10
+        numberOfFollowers: 10,
+        status: "pending"
     };
-    $scope.defaultSearch = {
-                              "ageRange": "0-100",
-                              "count": "50",
-                              "numberOfFollowers": 10,
-                                "campaignIds": "",
-                               "startKey": "",
-                               "tags": ""
-                           };
+
      $scope.toggleSearch = function(){
             $scope.showSearchCriteria = !$scope.showSearchCriteria;
         };
 
     $rootScope.getCampaigns = $scope.getCampaigns = function(){
-    $scope.apiClient.campaignGet(angular.extend($scope.defaultSearch, $scope.search), {}, {
-        headers:{"Content-type": "application/json"}
-    }
-    ).then(function(campaigns){
-    	    $scope.campaigns = campaigns.data;
-        $scope.$apply   ();
-    	}).catch(function(){
-    	    console.log("error");
-    	});
+        CampaignService.getCampaigns($scope.search).then(
+            function(campaigns){
+                $scope.campaigns = campaigns.data;
+                $scope.$apply   ();
+            }
+        ).catch(function(){
+                console.log("error");
+            });
     };
     $scope.getCampaigns();
 
