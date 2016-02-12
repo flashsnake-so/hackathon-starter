@@ -338,6 +338,10 @@ body{
     width: 70%;
 }
 
+.applicationStatusTab .thumbnail{
+    height: 334px;
+}
+
 /*Campaign Details Page*/
 .appForm .campaign-item .thumbnail{
     height: auto;
@@ -346,6 +350,9 @@ body{
 /*Performance Page*/
 .performancePage .campaign-item .thumbnail{
     height: auto;
+}
+.fb-post-panel{
+    margin: 20px;
 }
 
 /*Common*/

@@ -2,9 +2,12 @@
     <h3>Performance</h3>
     <div class="col-sm-6">
         <h4 class="page-header">Facebook Posts for your campaigns</h4>
-        <p ng-show="completedCampaigns.length < 1"class="alert alert-info">
+        <p ng-show="!loading && completedCampaigns.length < 1" class="alert alert-info">
             You don't have any tracked Facebook Posts.
         </p>
+        <div ng-show="loading" class="cssload-container">
+            <div class="large- cssload-double-torus"></div>
+        </div>
         <div ng-click="getPostStats(campaign)" ng-repeat="campaign in completedCampaigns" class="campaign-item col-sm-6">
             <div class="thumbnail">
                 <div class="caption">
@@ -21,8 +24,8 @@
         <p ng-show="!selectedCampaign.completedApplications || selectedCampaign.completedApplications.length < 1"class="alert alert-info">
             Click on a campaign to see posts.
         </p>
-        <div class="panel panel-info" ng-repeat="apply in selectedCampaign.completedApplications">
-            <div class="panel-heading"><a ng-href="http://facebook.com/{{apply.facebookPostId}}" target="_blank" class="pull-right">View post</a>
+        <div class="fb-post-panel panel panel-info" ng-repeat="apply in selectedCampaign.completedApplications">
+            <div class="panel-heading"><a ng-href="http://facebook.com/{{apply.facebookPostId}}" target="_blank" class="pull-right"><i class="fa fa-external-link"></i>View post</a>
                 <h4><i class="fa fa-facebook"></i>&nbsp;Post Content for <i>{{selectedCampaign.topic}}</i></h4>
             </div>
             <div class="panel-body">

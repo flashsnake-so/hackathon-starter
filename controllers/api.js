@@ -245,8 +245,8 @@ exports.schedulePostsForApplication = function(req, res, nect){
 
     }
     if(trade.ownerActionTime){
-        schedulePost(trade.facebookPageId, trade.actionTime, null, trade.postContent, trade.userId, "applicant", function(response){
-            schedulePost(trade.ownerFacebookPageId, trade.ownerActionTime, trade.ownerAccessToken, trade.ownerPostContent, trade.ownerUserId, "owner", function(response){return res.send(response)});
+        schedulePost(trade.facebookPageId, trade.actionTime, trade.applicantAccessToken, trade.postContent, trade.userId, "applicant", function(response){
+            schedulePost(trade.ownerFacebookPageId, trade.ownerActionTime, null, trade.ownerPostContent, trade.ownerUserId, "owner", function(response){return res.send(response)});
         });
     } else {
         return res.status(500).send("Missing owner's post time.");

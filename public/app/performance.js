@@ -1,12 +1,16 @@
 app.controller('performanceCtrl', function ($scope, $http, $rootScope, CampaignService) {
     $scope.selectedCampaign = {};
     $scope.completedCampaigns = [];
+    $scope.loading = true;
     $scope.getMyCampaigns = function(){
         CampaignService.getCampaigns({campaignIds: $scope.user.campaignIds.join(), status: "completed"}).then(function(campaigns){
             $scope.completedCampaigns = campaigns.data;
+            $scope.loading = false;
             $scope.$apply();
         }).catch(function(){
                 console.log("error");
+                $scope.loading = false;
+                $scope.$apply();
             });
     };
     if($scope.user.campaignIds && $scope.user.campaignIds.length > 0){

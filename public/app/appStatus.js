@@ -141,7 +141,7 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http, CampaignSer
         $http.get('/extendFbToken/' + $rootScope.fbToken, {}).then(function(res){
             if(!res.data.message){
                 $rootScope.fbToken = res.data.newToken;
-                application.ownerAccessToken = $rootScope.fbToken;
+                application.applicantAccessToken = $rootScope.fbToken;
                 //schedule posts
                 $http.post("/api/scheduleFacebookPosts", {"application": application}, {headers:{"Content-type": "application/json"}}).then(function(res){
                     $rootScope.alerts.push({type:"success", msg:"Post has been successfully scheduled"});
@@ -149,7 +149,7 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http, CampaignSer
                     var updatedApplication = {};
                     angular.copy(application, updatedApplication);
                     delete updatedApplication.updateTime;
-                    delete updatedApplication.ownerAccessToken;
+                    delete updatedApplication.applicantAccessToken;
                     delete updatedApplication.createTime;
                     delete updatedApplication.$$hashKey;
                     delete updatedApplication.applicantProfile;

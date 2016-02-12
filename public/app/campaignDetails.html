@@ -61,7 +61,7 @@
                                 </div>
                                 <label>Date and time you will post</label>
                                 <p class="input-group col-md-6">
-                                    <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-init="isCalendarOpened=false" ng-model="date" ng-init="date=''" is-open="selectedApply.isCalendarOpened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" ng-required="true"  alt-input-formats="altInputFormats" />
+                                    <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-init="isCalendarOpened=false" ng-model="date" ng-init="date=''" is-open="isCalendarOpened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" ng-required="true"  alt-input-formats="altInputFormats" />
                                     <span class="input-group-btn">
                                         <button type="button" class="btn btn-default" ng-click="isCalendarOpened = !isCalendarOpened"><i class="glyphicon glyphicon-calendar"></i></button>
                                     </span>
