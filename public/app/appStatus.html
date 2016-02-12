@@ -186,14 +186,14 @@
 
 
     <!--Applications Tab-->
-        <uib-tab class="applicationStatusTab" select="showMyApplications()" heading="Your Applications">
+        <uib-tab select="showMyApplications()" heading="Your Applications">
             <div ng-show="myApplications.length < 1">
                 <p class="alert alert-info">You haven't applied to any campaign yet.&nbsp;&nbsp;<a href="#/campaign" class="btn btn-success" >See Campaigns</a></p>
             </div>
             <div ng-show="myApplications.length > 0">
                 <div class="row">
                     <h3 class="page-header">Your Applications</h3><p >Click to see applications</p>
-                    <div ng-repeat="campaign in appliedCampaigns" class="campaign-item col-md-3 col-sm-6">
+                    <div ng-repeat="campaign in appliedCampaigns" class="application-status campaign-item col-md-3 col-sm-6">
                         <div class="thumbnail">
                             <div class="caption">
                                 <h4 class="media-heading">{{campaign.topic}}</h4>

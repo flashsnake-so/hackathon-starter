@@ -338,7 +338,7 @@ body{
     width: 70%;
 }
 
-.applicationStatusTab .thumbnail{
+.application-status.campaign-item .thumbnail{
     height: 334px;
 }
 
