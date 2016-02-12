@@ -14,7 +14,7 @@ app.service('CampaignService', function () {
 
 
     this.getCampaigns = function(filters){
-        return this.apiClient.campaignGet(angular.extend(defaultSearch, filters), {}, {
+        return this.apiClient.campaignGet(angular.extend(angular.copy(defaultSearch), filters), {}, {
                 headers:{"Content-type": "application/json"}
             }
         );

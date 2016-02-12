@@ -40,7 +40,9 @@
     </div>
 
     <div class="row">
-        <div class="spinner" ng-show="loading"></div>
+        <div ng-show="loading" class="cssload-container">
+            <div class="large- cssload-double-torus"></div>
+        </div>
         <div ng-repeat="campaign in campaigns" class="campaign-item col-md-3 col-sm-6">
             <div class="thumbnail">
                 <div class="caption">

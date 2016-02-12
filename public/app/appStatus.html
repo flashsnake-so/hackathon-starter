@@ -142,7 +142,7 @@
                                                     <button type="button" class="btn btn-default" ng-click="apply.isCalendarOpened = !apply.isCalendarOpened"><i class="glyphicon glyphicon-calendar"></i></button>
                                                 </span>
                                             </p>
-                                            <uib-timepicker ng-model="apply.time" ng-init="apply.time = ''"></uib-timepicker>
+                                            <uib-timepicker ng-show="apply.status=='pending'" ng-model="apply.time" ng-init="apply.time = ''"></uib-timepicker>
                                             <dl ng-if="apply.status !== 'pending'">
                                                 <dt >Content you will post on Facebook</dt>
                                                 <dd >{{apply.ownerPostContent}}</dd>
