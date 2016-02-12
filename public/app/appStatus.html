@@ -76,7 +76,7 @@
                                 <div class="media-body">
                                     <h4 class="media-heading">{{apply.applicantProfile.name}}</h4>
                                     {{apply.reasons}}
-                                    <p ng-show="apply.status='accepted'" class="alert alert-info ">Waiting for {{apply.applicantProfile.name}} to schedule the posts</p>
+                                    <p ng-show="apply.status=='accepted'" class="alert alert-info ">Waiting for {{apply.applicantProfile.name}} to schedule the posts</p>
                                     <i class="glyphicon glyphicon-ok" ng-show="apply.status == 'scheduled'||apply.status == 'completed'"/>
 
                                 </div>

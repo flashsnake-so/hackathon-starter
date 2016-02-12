@@ -1,5 +1,6 @@
 app.controller('campaignCtrl', function ($scope, $uibModal, $rootScope, CampaignService) {
     $scope.campaigns = [];
+    $scope.loading = true;
 
     $scope.showSearchCriteria = false;
 
@@ -17,10 +18,12 @@ app.controller('campaignCtrl', function ($scope, $uibModal, $rootScope, Campaign
         CampaignService.getCampaigns($scope.search).then(
             function(campaigns){
                 $scope.campaigns = campaigns.data;
-                $scope.$apply   ();
+                $scope.loading = false;
+                $scope.$apply();
             }
         ).catch(function(){
                 console.log("error");
+                $scope.loading = false;
             });
     };
     $scope.getCampaigns();
