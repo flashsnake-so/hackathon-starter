@@ -7,6 +7,8 @@ var User = require('../models/User');
 var secrets = require('../config/secrets');
 var graph = require('fbgraph');
 
+var apiClient = require('apigClient');
+
 /**
  * GET /login
  * Login page.
@@ -75,15 +77,15 @@ exports.postLogin = function(req, res, next) {
 exports.getUserDetails = function(req, res, next){
     res.setHeader('Content-Type', 'application/json');
 
-    User.findById(req.params.id, function(err, user) {
-        if(user){
-            return res.send(JSON.stringify(user));
-        } else {
-            res.status(500).send(JSON.stringify(err));
-        }
+    apiClient.getUserById(req.params.id, function(err, user){
+      if(!err && user){
+          return res.send(JSON.stringify(user));
+      } else {
+          res.status(500).send(JSON.stringify(err));
+      }
     });
+};
 
-}
 /**
  * GET /logout
  * Log out.
@@ -126,11 +128,14 @@ exports.postSignup = function(req, res, next) {
     password: req.body.password
   });
 
-  User.findOne({ email: req.body.email }, function(err, existingUser) {
+  apiClient.getUserByEmail(req.body.email, function(err, existingUser){
     if (existingUser) {
     errors = [{ msg: 'Account with that email address already exists.' }];
       return res.status(400).send(JSON.stringify({errors:errors}));
     }
+
+    //TODO: need to create the update endpoint
+
     user.save(function(err) {
       if (err) {
         return res.status(500).send(JSON.stringify({errors:err}));
@@ -160,23 +165,23 @@ exports.getAccount = function(req, res) {
  * Update campaigns information.
  */
 exports.patchUpdateCampaigns = function(req, res) {
-    User.update({"_id" : req.body.user.id}, 
-        { $push: { 'campaignIds' : req.body.campaignId } }, 
-        { }, 
+    User.update({"_id" : req.body.user.id},
+        { $push: { 'campaignIds' : req.body.campaignId } },
+        { },
         function(err, data){
             if (err) {
                 console.error(err);
                 return res.status(400).send(JSON.stringify({errors:err}));
             }
             return res.send({"message" : "campaign Ids updated"});
-        });   
+        });
 };
 
 exports.patchUpdateProfile = function(req, res) {
-    
+
     var context = {};
     var body = req.body;
-    
+
     var alloweUpdateFields = {
         "name": true,
         "gender": true,
@@ -185,34 +190,34 @@ exports.patchUpdateProfile = function(req, res) {
         "picture": true,
         "facebookDefaultPageId": true
     };
-    
+
     var passed = true;
     var userId = body.user.id;
-    
+
     delete body.user;
-    
+
     for (var property in body) {
         if (body.hasOwnProperty(property) && alloweUpdateFields[property] === undefined) {
             passed = false;
             return res.status(409).send(JSON.stringify({errors:"only name, gender, location, website, picture, facebookDefaultPageId are accepted."}));
         }
-        
+
         context["profile." + property] = body[property];
     }
-    
+
     console.log(context);
-    
+
     if (passed) {
-        User.update({"_id" : userId}, 
-            { $set : context }, 
-            {}, 
+        User.update({"_id" : userId},
+            { $set : context },
+            {},
             function(err, data){
                 if (err) {
                     console.error(err);
                     return res.status(400).send(JSON.stringify({errors:err}));
                 }
                 return res.send({"message" : "user profile updated"});
-            });   
+            });
     }
 };
 
