@@ -148,13 +148,13 @@ apigClientFactory.newClient = function (config) {
     apigClient.campaignGet = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         
-        apiGateway.core.utils.assertParametersDefined(params, ['numberOfFollowers', 'campaignIds', 'count', 'ageRange', 'startKey', 'tags', 'status'], ['body']);
+        apiGateway.core.utils.assertParametersDefined(params, ['numberOfFollowers', 'campaignIds', 'userId', 'count', 'ageRange', 'startKey', 'tags', 'status'], ['body']);
         
         var campaignGetRequest = {
             verb: 'get'.toUpperCase(),
             path: pathComponent + uritemplate('/campaign').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
             headers: apiGateway.core.utils.parseParametersToObject(params, []),
-            queryParams: apiGateway.core.utils.parseParametersToObject(params, ['numberOfFollowers', 'campaignIds', 'count', 'ageRange', 'startKey', 'tags', 'status']),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, ['numberOfFollowers', 'campaignIds', 'userId', 'count', 'ageRange', 'startKey', 'tags', 'status']),
             body: body
         };
         
@@ -202,13 +202,13 @@ apigClientFactory.newClient = function (config) {
     apigClient.campaignsApplicationGet = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         
-        apiGateway.core.utils.assertParametersDefined(params, ['campaignId'], ['body']);
+        apiGateway.core.utils.assertParametersDefined(params, ['userId', 'campaignId'], ['body']);
         
         var campaignsApplicationGetRequest = {
             verb: 'get'.toUpperCase(),
             path: pathComponent + uritemplate('/campaigns/application').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
             headers: apiGateway.core.utils.parseParametersToObject(params, []),
-            queryParams: apiGateway.core.utils.parseParametersToObject(params, ['campaignId']),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, ['userId', 'campaignId']),
             body: body
         };
         
@@ -412,6 +412,24 @@ apigClientFactory.newClient = function (config) {
         
         
         return apiGatewayClient.makeRequest(twitterOptionsRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
+    apigClient.userGet = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, ['id', 'email'], ['body']);
+        
+        var userGetRequest = {
+            verb: 'get'.toUpperCase(),
+            path: pathComponent + uritemplate('/user').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, ['id', 'email']),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(userGetRequest, authType, additionalParams, config.apiKey);
     };
     
     

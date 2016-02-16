@@ -18,8 +18,8 @@ app.controller('campaignDetailsCtrl', function ($scope, $uibModal, $rootScope, $
         });
 
     $scope.getMyCampaigns = function(){
-        if($scope.user.campaignIds.length > 0 && $scope.myCampaigns < 1){
-            CampaignService.getCampaigns({campaignIds: $scope.user.campaignIds.join()}).then(function(campaigns){
+        if($scope.user._id && $scope.user._id.length > 0){
+            CampaignService.getCampaigns({userId: $scope.user._id}).then(function(campaigns){
                 $scope.myCampaigns = campaigns.data;
                 $scope.$apply   ();
             }).catch(function(){
@@ -27,14 +27,13 @@ app.controller('campaignDetailsCtrl', function ($scope, $uibModal, $rootScope, $
                 });
         }
     };
-    if($scope.user.campaignIds.length > 0){
-        CampaignService.getCampaigns({campaignIds: $scope.user.campaignIds.join()}).then(function(campaigns){
+    if($scope.user._id.length > 0){
+        CampaignService.getCampaigns({userId: $scope.user._id}).then(function(campaigns){
             $scope.myCampaigns = campaigns.data;
             $scope.$apply   ();
         }).catch(function(){
                 console.log("error");
             });
-    }
 
     $scope.appForm = {
         applicationId: generateUUID(),
@@ -91,4 +90,3 @@ app.controller('campaignDetailsCtrl', function ($scope, $uibModal, $rootScope, $
     }
 
 });
-

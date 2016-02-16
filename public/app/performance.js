@@ -3,7 +3,7 @@ app.controller('performanceCtrl', function ($scope, $http, $rootScope, CampaignS
     $scope.completedCampaigns = [];
     $scope.loading = true;
     $scope.getMyCampaigns = function(){
-        CampaignService.getCampaigns({campaignIds: $scope.user.campaignIds.join(), status: "completed"}).then(function(campaigns){
+        CampaignService.getCampaigns({userId: $scope.user._id, status: "completed"}).then(function(campaigns){
             $scope.completedCampaigns = campaigns.data;
             $scope.loading = false;
             $scope.$apply();

@@ -8,6 +8,7 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http, CampaignSer
     $scope.selectedApply = {};
 
 //    My Campaigns Tab
+
     $scope.selectedCampaign = {applications:[]};
     $scope.getMyCampaigns = function(){
         CampaignService.getCampaigns({userId: $scope.user._id}).then(function(campaigns){
@@ -25,11 +26,13 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http, CampaignSer
                 console.log("error");
             });
     };
-    if($scope.user.campaignIds.length > 0){
-        $scope.getMyCampaigns();
-    }
+
+
+    $scope.getMyCampaigns();
+
     //Get fb page list for accepting applications
     $scope.pageList = [];
+    $scope.appForm = {};
     if($rootScope.fbToken){
         $scope.apiClient.pagesGet({"accessToken": $rootScope.fbToken}, {}, {
                 headers:{"Content-type": "application/json"}
@@ -39,13 +42,13 @@ app.controller('appStatusCtrl', function ($scope, $rootScope, $http, CampaignSer
                 $scope.appForm.pageId = $scope.pageList[0].id;
                 $scope.$apply();
             }).catch(function(){
-                console.log("Cannot get pages ");
+                console.log("appStatus Cannot get pages ");
             });
     }
 
     $scope.showCampaignStatus = function(id){
         $scope.selectedCampaign.id = id;
-        $scope.apiClient.campaignCampaignIdApplicationGet({campaignId: id}, {}, {
+        $scope.apiClient.campaignsApplicationGet({userId: "", campaignId: id}, {}, {
             headers:{"Content-type": "application/json"}
         }).then(function(res){
 //                angular.forEach(res.data, function(application){
